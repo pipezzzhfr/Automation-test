@@ -1,15 +1,20 @@
 import { expect } from '@wdio/globals'
 import LoginPage from '../pageobjects/login.page.js'
-import SecurePage from '../pageobjects/secure.page.js'
+import Logo from '../pageobjects/secure.page.js'
 
 describe('My Login application', () => {
-    it('should login with valid credentials', async () => {
-        await LoginPage.open()
+    // This hook ensures that the browser is ready before any tests run
+    before(async () => {
+        await LoginPage.open();  // Open the login page before running any tests
+    });
 
-        await LoginPage.login('tomsmith', 'SuperSecretPassword!')
-        await expect(SecurePage.flashAlert).toBeExisting()
-        await expect(SecurePage.flashAlert).toHaveText(
-            expect.stringContaining('You logged into a secure area!'))
+    it('should login with valid credentials', async () => {
+        await LoginPage.login('standard_user', 'secret_sauce');
+        
+        // Verifies if the logo exists in the DOM
+        await expect(Logo.image).toBeExisting(); 
+
+        // Verifies if the logo is displayed (visible)
+        await expect(Logo.image).toBeDisplayed(); 
     })
 })
-
